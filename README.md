@@ -11,3 +11,15 @@ The MERN Web stack consists of the following components:
 - ReactJS: A frontend framework developed by Facebook. It is based on JavaScript, used to build User Interface (UI) components.
 
 - Node.js: A JavaScript runtime environment. It is used to run JavaScript on a machine rather than in a browser.
+
+
+In this project I would work on the following components of the LEMP stack:
+
+- backend configuration
+- Install expressjs
+- Models
+- Mongodb database
+- frontend creation
+- Frontend creation (continued)
+
+![Link to the project document](./project3.md)
