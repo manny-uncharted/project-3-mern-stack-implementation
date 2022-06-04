@@ -13,7 +13,7 @@ The MERN Web stack consists of the following components:
 - Node.js: A JavaScript runtime environment. It is used to run JavaScript on a machine rather than in a browser.
 
 
-In this project I would work on the following components of the LEMP stack:
+In this project I would work on the following components of the MERN stack in making our simpe to-do application:
 
 - backend configuration
 - Install expressjs
