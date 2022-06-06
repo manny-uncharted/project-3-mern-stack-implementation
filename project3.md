@@ -211,4 +211,46 @@ Each task will be associated with some particular endpoint and will use differen
     ![For each task, we need to create routes that will define various endpoints that the To-do app will depend on. So let us create a folder routes.](./img/mkdir-routes.png)
 
     Note: The command above creates a folder routes and helps us change directory into that created folder.
-    
+
+- Now, create a file api.js with the command below.
+    ```
+    touch api.js
+    ```
+
+    Results:
+    ![Now, create a file api.js with the command below.](./img/touch-api-js.png)
+
+    Note: The command above creates a file api.js and run ls to confirm that your api.js file is successfully created
+
+- Open the file with the command below
+    ```
+    nano api.js
+    ```
+    and paste the following code:
+    ```
+    const express = require ('express');
+    const router = express.Router();
+
+    router.get('/todos', (req, res, next) => {
+
+    });
+
+    router.post('/todos', (req, res, next) => {
+
+    });
+
+    router.delete('/todos/:id', (req, res, next) => {
+
+    })
+
+    module.exports = router;
+    ```
+
+    Results:
+    ![Open the file with the command below.](./img/nano-api-js.png)
+
+    Note: The command above opens the file api.js and allows us to enter the commands and create the get, delete and post endpoints.
+
+## Models
+Moving forward let's create Models directory.
+
