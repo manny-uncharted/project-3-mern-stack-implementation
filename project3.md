@@ -254,3 +254,107 @@ Each task will be associated with some particular endpoint and will use differen
 ## Models
 Moving forward let's create Models directory.
 
+Since the app is going to make use of Mongodb which is a NoSQL database, we need to create a model.
+
+A model is at the heart of JavaScript based applications, and it is what makes it interactive.
+
+We will also use models to define the database schema . This is important so that we will be able to define the fields stored in each Mongodb document
+In essence, the Schema is a blueprint of how the database will be constructed, including other data fields that may not be required to be stored in the database. These are known as virtual properties
+
+To create a Schema and a model, install mongoose which is a Node.js package that makes working with mongodb easier.
+
+- To use mongoose, install it using npm.
+    ```
+    npm install mongoose
+    ```
+
+    Results:
+    ![To use mongoose, install it using npm.](./img/npm-install-mongoose.png)
+
+    Note: The command above installs mongoose.
+
+- Create a new folder models and change directory into the newly created models folder.
+    ```
+    mkdir models
+    cd models
+    ```
+
+    Results:
+    ![Create a new folder models and change directory into the newly created models folder.](./img/mkdir-models.png)
+
+    Note: The command above creates a folder models and helps us change directory into that created folder.
+
+- Inside the models folder, create a file and name it todo.js
+    ```
+    touch todo.js
+    ```
+
+    Results:
+    ![Inside the models folder, create a file and name it todo.js](./img/touch-todo-js.png)
+
+    Note: The command above creates a file todo.js and run ls to confirm that your todo.js file is successfully created
+
+- Open the file created with vim todo.js then paste the code below in the file
+    ```
+    const mongoose = require('mongoose');
+    const Schema = mongoose.Schema;
+
+    //create schema for todo
+    const TodoSchema = new Schema({
+    action: {
+    type: String,
+    required: [true, 'The todo text field is required']
+    }
+    })
+
+    //create model for todo
+    const Todo = mongoose.model('todo', TodoSchema);
+
+    module.exports = Todo;
+    ```
+
+    Results:
+    ![Open the file created with vim todo.js then paste the code below in the file](./img/nano-todo-js.png)
+
+    Note: The command above opens the file todo.js and then you paste the code below in the file.
+
+- Now we need to update our routes from the file api.js in ‘routes’ directory to make use of the new model.
+
+    In Routes directory, open api.js with vim api.js, delete the code inside with :%d command and paste there code below into it then save and exit
+
+    ```
+    const express = require ('express');
+    const router = express.Router();
+    const Todo = require('../models/todo');
+
+    router.get('/todos', (req, res, next) => {
+
+    //this will return all the data, exposing only the id and action field to the client
+    Todo.find({}, 'action')
+    .then(data => res.json(data))
+    .catch(next)
+    });
+
+    router.post('/todos', (req, res, next) => {
+    if(req.body.action){
+    Todo.create(req.body)
+    .then(data => res.json(data))
+    .catch(next)
+    }else {
+    res.json({
+    error: "The input field is empty"
+    })
+    }
+    });
+
+    router.delete('/todos/:id', (req, res, next) => {
+    Todo.findOneAndDelete({"_id": req.params.id})
+    .then(data => res.json(data))
+    .catch(next)
+    })
+
+    module.exports = router;
+    ```
+
+    Results:
+    ![Now we need to update our routes from the file api.js in ‘routes’ directory to make use of the new model.](./img/nano-upd-api-js.png)
