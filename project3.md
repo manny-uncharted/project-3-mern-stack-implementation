@@ -358,3 +358,78 @@ To create a Schema and a model, install mongoose which is a Node.js package that
 
     Results:
     ![Now we need to update our routes from the file api.js in ‘routes’ directory to make use of the new model.](./img/nano-upd-api-js.png)
+
+
+## MONGODB Database
+MongoDB Database
+We need a database where we will store our data. For this we will make use of mLab. mLab provides MongoDB database as a service solution (DBaaS), so to make life easy, you will need to sign up for a shared clusters free account, which is ideal for our use case. Sign up here. Follow the sign up process, select AWS as the cloud provider, and choose a region near you.
+
+- create an account and complete the checklist
+    - Create a MongoDB database and collection inside mLab
+    - Allow access to the MongoDB database from anywhere (Not secure, but it is ideal for testing)
+    
+    Results:
+    ![Mongodb setup](./img/create-account.png)
+
+In the index.js file, we specified process.env to access environment variables, but we have not yet created this file. So we need to do that now.
+
+- we would create a file in our Todo directory and name it .env.
+    ```
+    touch .env
+    nano .env
+    ```
+    And add the connection string to access the database in it, just as below:
+    ```
+    DB = 'mongodb+srv://<username>:<password>@<network-address>/<dbname>?retryWrites=true&w=majority'
+    ```
+    ```Ensure to update <username>, <password>, <network-address> and <database> according to your setup```
+
+    Results:
+    ![we would create a file in our Todo directory and name it .env.](./img/touch-env.png)
+
+    Note: The command above creates a file .env and run ls to confirm that your .env file is successfully created.
+
+- Now we need to update the index.js to reflect the use of .env so that Node.js can connect to the database.
+    ```
+    const express = require('express');
+    const bodyParser = require('body-parser');
+    const mongoose = require('mongoose');
+    const routes = require('./routes/api');
+    const path = require('path');
+    require('dotenv').config();
+
+    const app = express();
+
+    const port = process.env.PORT || 5000;
+
+    //connect to the database
+    mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log(`Database connected successfully`))
+    .catch(err => console.log(err));
+
+    //since mongoose promise is depreciated, we overide it with node's promise
+    mongoose.Promise = global.Promise;
+
+    app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "\*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+    });
+
+    app.use(bodyParser.json());
+
+    app.use('/api', routes);
+
+    app.use((err, req, res, next) => {
+    console.log(err);
+    next();
+    });
+
+    app.listen(port, () => {
+    console.log(`Server running on port ${port}`)
+    });
+    ```
+
+    Results:
+    ![Now we need to update the index.js to reflect the use of .env so that Node.js can connect to the database.](./img/nano-index-js.png)
+
