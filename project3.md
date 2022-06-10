@@ -433,3 +433,229 @@ In the index.js file, we specified process.env to access environment variables, 
     Results:
     ![Now we need to update the index.js to reflect the use of .env so that Node.js can connect to the database.](./img/nano-index-js.png)
 
+    Note: We're using environment variables to store information is considered more secure and best practice to separate configuration and secret data from the application, instead of writing connection strings directly inside the index.js application file
+
+- Start your server using the command:
+    ```
+    node index.js
+    ```
+
+    Results:
+    ![Start your server using the command:](./img/node-index.png)
+
+    Note: We should see a message ‘Database connected successfully’, if so – we have our backend configured. Now we are going to test it.
+
+### Testing Backend Code without Frontend using RESTful API
+So far we have written backend part of our To-Do application, and configured a database, but we do not have a frontend UI yet. We need ReactJS code to achieve that. But during development, we will need a way to test our code using RESTfulL API. Therefore, we will need to make use of some API development client to test our code.
+
+- we would be installing postman on our local machine and we would test all the API endpoints and make sure they are working. For the endpoints that require body, you should send JSON back with the necessary fields since it’s what we setup in our code.
+
+- Now open your Postman, create a POST request to the API http://<PublicIP-or-PublicDNS>:5000/api/todos. This request sends a new task to our To-Do list so the application could store it in the database.
+    ```
+    POST http://<PublicIP-or-PublicDNS>:8000/api/todos
+    ```
+    Results:
+    ![Now open your Postman, create a POST request to the API http://<PublicIP-or-PublicDNS>:5000/api/todos.](./img/postman-post.png)
+    Note: make sure your set header key Content-Type as application/json
+
+- Create a GET request to your API on http://<PublicIP-or-PublicDNS>:5000/api/todos. This request retrieves all existing records from out To-do application (backend requests these records from the database and sends it us back as a response to GET request).
+    ```
+    GET http://<PublicIP-or-PublicDNS>:8000/api/todos
+    ```
+    Results:
+    ![Create a GET request to your API on http://<PublicIP-or-PublicDNS>:5000/api/todos.](./img/postman-get.png)
+    Note: make sure your set header key Content-Type as application/json
+
+
+## Frontend Development
+Since we are done with the functionality we want from our backend and API, it is time to create a user interface for a Web client (browser) to interact with the application via API. To start out with the frontend of the To-do app, we will use the create-react-app command to scaffold our app
+
+- In the same root directory as your backend code, which is the Todo directory, run
+    ```
+     npx create-react-app client
+    ```
+    Results:
+    ![In the same root directory as your backend code, which is the Todo directory, run](./img/create-react-app.png)
+
+    Note: This will create a new folder in your Todo directory called client, where you will add all the react code.
+
+### Running a React App
+Before testing the react app, there are some dependencies that need to be installed.
+
+- Install concurrently. It is used to run more than one command simultaneously from the same terminal window
+    ```
+    npm install concurrently --save-dev
+    ```
+    Results:
+    ![Install concurrently.](./img/npm-install-concurrently.png)
+
+- Install nodemon. It is used to run and monitor the server. If there is any change in the server code, nodemon will restart it automatically and load the new changes.
+    ```
+    npm install nodemon --save-dev
+    ```
+    Results:
+    ![Install nodemon.](./img/npm-install-nodemon.png)
+
+- In Todo folder open the package.json file. Change the highlighted part of the below screenshot and replace with the code below.
+    ```
+    "scripts": {
+        "start": "node index.js",
+        "start-watch": "nodemon index.js",
+        "dev": "concurrently \"npm run start-watch\" \"cd client && npm start\""
+    },
+
+    ```
+    Results:
+    ![In Todo folder open the package.json file.](./img/package-json.png)
+
+### Configure Proxy in package.json
+- Change directory to ‘client’
+    ```
+    cd client
+    ```
+    Results:
+    ![Change directory to ‘client’.](./img/cd-client.png)
+
+- Open the package.json file
+    ```
+    nano package.json
+    ```
+
+    Results:
+    ![Open the package.json file.](./img/nano-package-json.png)
+
+- Add the key value pair in the package.json file "proxy": "http://localhost:8000"
+    ```
+    "proxy": "http://localhost:8000"
+    ```
+    Results:
+    ![Add the key value pair in the package.json file "proxy": "http://localhost:8000"](./img/package-json-proxy.png)
+
+    Note: The whole purpose of adding the proxy configuration is to make it possible to access the application directly from the browser by simply calling the server url like http://localhost:8000 rather than always including the entire path like http://localhost:8000/api/todos
+
+- Now, ensure you are inside the Todo directory, and simply do
+    ```
+    npm run dev
+    ```
+
+    Results:
+    ![Now, ensure you are inside the Todo directory, and simply do](./img/npm-run-dev.png)
+
+- Your app should open and start running on localhost:3000
+    ```
+    http://localhost:3000
+    ```
+    Results:
+    ![Your app should open and start running on localhost:3000](./img/localhost-3000.png)
+
+
+### Creating our React Components
+One of the advantages of react is that it makes use of components, which are reusable and also makes code modular. For our Todo app, there will be two stateful components and one stateless component.
+
+- From our Todo directory run
+    ```
+    cd client
+    ```
+
+    Results:
+    ![From our Todo directory run](./img/cd-client.png)
+
+    Note: This will change the directory to the client folder.
+
+- move into the src directory
+    ```
+    cd src
+    ```
+    Results:
+    ![move into the src directory](./img/cd-src.png)
+
+- Inside our src folder create another folder called components
+    ```
+    mkdir components
+    ```
+    Results:
+    ![Inside our src folder create another folder called components](./img/mkdir-components.png)
+
+- Move into the components directory with
+    ```
+    cd components
+    ```
+    Results:
+    ![Move into the components directory with](./img/cd-components.png)
+
+    Note: This will change the directory to the components folder.
+
+- Inside ‘components’ directory create three files Input.js, ListTodo.js and Todo.js
+    ```
+    touch Input.js
+    touch ListTodo.js
+    touch Todo.js
+    ```
+    Results:
+    ![Inside ‘components’ directory create three files Input.js, ListTodo.js and Todo.js](./img/touch-input-list-todo-todo.png)
+
+- Open Input.js file
+    ```
+    nano Input.js
+    ```
+    and paste the following code:
+    ```
+    import React, { Component } from 'react';
+    import axios from 'axios';
+
+    class Input extends Component {
+
+    state = {
+    action: ""
+    }
+
+    addTodo = () => {
+    const task = {action: this.state.action}
+
+        if(task.action && task.action.length > 0){
+        axios.post('/api/todos', task)
+            .then(res => {
+            if(res.data){
+                this.props.getTodos();
+                this.setState({action: ""})
+            }
+            })
+            .catch(err => console.log(err))
+        }else {
+        console.log('input field required')
+        }
+
+    }
+
+    handleChange = (e) => {
+    this.setState({
+    action: e.target.value
+    })
+    }
+
+    render() {
+    let { action } = this.state;
+    return (
+    <div>
+    <input type="text" onChange={this.handleChange} value={action} />
+    <button onClick={this.addTodo}>add todo</button>
+    </div>
+    )
+    }
+    }
+
+    export default Input
+    ```
+
+    Results:
+    ![Open Input.js file](./img/nano-input.png)
+
+To make use of Axios, which is a Promise based HTTP client for the browser and node.js, you need to cd into your client from your terminal and run yarn add axios or npm install axios.
+
+- install axios
+    ```
+    npm install axios
+    ```
+
+    Results:
+    ![install axios](./img/npm-install-axios.png)
