@@ -17,7 +17,7 @@ Here we would begin by configuring the backend for our to-do app.
     ```
 
     Results:
-    ![Update the linux server with the latest version of the software.](./img/sudo-apt-update.png)
+    ![Update the linux server with the latest version of the software.](./img/sudo-apt-update.PNG)
 
 - upgrade ubuntu on the instance
     ```
@@ -25,7 +25,7 @@ Here we would begin by configuring the backend for our to-do app.
     ```
 
     Results:
-    ![Upgrade the linux server with the latest version of the software.](./img/sudo-apt-upgrade.png)
+    ![Upgrade the linux server with the latest version of the software.](./img/sudo-apt-upgrade.PNG)
 
 - Get the location of Node.js software from Ubuntu repositories.
     ```
@@ -41,7 +41,7 @@ Here we would begin by configuring the backend for our to-do app.
     ```
 
     Results:
-    ![Install Node.js on the server.](./img/sudo-apt-get-install-nodejs.png)
+    ![Install Node.js on the server.](./img/sudo-apt-get-install-nodejs.PNG)
 
     Note: The command above installs both nodejs and npm. NPM is a package manager for Node like apt for Ubuntu, it is used to install Node modules & packages and to manage dependency conflicts.
 
